@@ -2,10 +2,26 @@
 public class Pit
 {
 	private int numSeeds;
-
-	public Pit()
+	private Pit next, previous;
+	
+	public Pit(Pit next,Pit previous)
 	{
+		this.next = next;
+		this.previous = previous;
+	}
+	
+	public Pit(int numSeeds, Pit next,Pit previous)
+	{
+		this(next,previous);
+		this.setNumSeeds(numSeeds);
+	}
+	
+	public Pit getNext() {
+		return next;
+	}
 
+	public Pit getPrevious() {
+		return previous;
 	}
 
 	public int getNumSeeds()
@@ -18,13 +34,9 @@ public class Pit
 		this.numSeeds = num;
 	}
 
-	public static void main(String[] args)
+	public void addSeeds(int num)
 	{
-		// test the Pit...
-
-		Pit test = new Pit();
-		test.setNumSeeds(4);
-
+		this.numSeeds += num;
 	}
 
 }

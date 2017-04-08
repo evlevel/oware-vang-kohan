@@ -1,11 +1,23 @@
 
 public class Player
 {
-
-	public static void main(String[] args)
+	
+	private int score;
+	
+	public void setScore(int score)
 	{
-		// TODO Auto-generated method stub
-
+		this.score = score;
+	}
+	
+	public int getScore()
+	{
+		return score;
+	}
+	
+	public void addScore(int scoreAdd)
+	{
+		this.score += scoreAdd;
 	}
 
 }
+

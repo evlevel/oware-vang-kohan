@@ -2,23 +2,14 @@
 public class Controller
 {
 
-	private Player player0;
-	private Player player1;
-	private Player playerToMove;
-
-	public static void main(String[] args)
+	private Game game;
+	
+	public String makeMove(int pitNumber)
 	{
-		// TODO Auto-generated method stub
-
+		String msg = null;
+		game.makeMove(pitNumber);
+		return msg;
 	}
 
-	private Pit active;
-
-	public Move makeMoveForCupNumber(int pitNumber)
-	{
-		active = Board.getPit(pitNumber);
-
-		return new Move();
-	}
 
 }
