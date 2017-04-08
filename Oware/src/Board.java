@@ -2,8 +2,8 @@
 public class Board
 {
 
-	int[] pits;
-	Player p1, p2;
+	private int[] pits;
+	private Player p1, p2;
 	
 	public Board(Player p1,Player p2)
 	{
@@ -116,4 +116,19 @@ public class Board
 		return pits[pitNumber]; 
 	}
 
+	public int getTotalSeedCount()
+	{
+		return getSeedCount(0,11);
+	}
+
+	private int getSeedCount(int pitNumber, int endPitNumber)
+	{
+		if (pitNumber <= endPitNumber)
+		{
+			return getSeedsInPit(pitNumber) + getSeedCount(nextPit(pitNumber),endPitNumber);
+		} else {
+			return 0;
+		}
+	}
+	
 }

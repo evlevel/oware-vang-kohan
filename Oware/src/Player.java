@@ -3,6 +3,17 @@ public class Player
 {
 	
 	private int score;
+	private String name;
+	
+	public Player(String playerName)
+	{
+		this.setName(playerName);
+	}
+
+	public Player()
+	{
+		this("Player");
+	}
 	
 	public void setScore(int score)
 	{
@@ -17,6 +28,16 @@ public class Player
 	public void addScore(int scoreAdd)
 	{
 		this.score += scoreAdd;
+	}
+
+	public String getName() 
+	{
+		return name;
+	}
+
+	public void setName(String name) 
+	{
+		this.name = name;
 	}
 
 }
