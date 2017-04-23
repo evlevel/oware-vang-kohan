@@ -2,13 +2,13 @@
 public class Game {
 
 	private Board board;
-	private Player p1,p2, currPlayer, winningPlayer;
+	private Player p1, p2, currPlayer, winningPlayer;
 	private boolean isGameActive;
 	
 	public Game()
 	{
-		p1 = new Player("Player 1");
-		p2 = new Player("Player 2");
+		p1 = new Player("Player 1",0);
+		p2 = new Player("Player 2",6);
 		board = new Board(p1,p2);
 		isGameActive = true;
 		currPlayer = p1;
@@ -17,7 +17,7 @@ public class Game {
 	public void makeMove(int pitNumber)
 	{
 		int lastPitNumber = board.sowSeeds(pitNumber);
-		board.scorePit(lastPitNumber);
+		board.scoreMove(currPlayer,lastPitNumber);
 		updateGameStatus();
 		if (isGameActive)
 			switchPlayer();
@@ -38,6 +38,11 @@ public class Game {
 			setGameActive(false);
 
 		}
+	}
+	
+	public Board getGameBoard()
+	{
+		return board;
 	}
 	
 	public int getPlayerScore(int playerNum)
@@ -63,10 +68,10 @@ public class Game {
 			return currPlayer.getName();
 		}
 	}
-
+	
 	private boolean hasMovesRemaining()
 	{
-		return board.getTotalSeedCount() > 2;
+		return (board.getTotalSeedCount() > 2);
 	}
 	
 	private boolean isWinningScore(int score)
@@ -94,7 +99,13 @@ public class Game {
 
 	private void switchPlayer()
 	{
-		setCurrPlayer(getCurrPlayer().equals(p1) ? p2 : p1);
+		if (getCurrPlayer().equals(p1))
+		{
+			setCurrPlayer(p2);		
+		} else {
+			setCurrPlayer(p1);
+		}
+		//StdOut.println(getCurrPlayer().getName());
 	}
 
 	public Player getWinningPlayer() {
@@ -112,5 +123,7 @@ public class Game {
 	private void setGameActive(boolean isGameActive) {
 		this.isGameActive = isGameActive;
 	}
+	
+	
 	
 }

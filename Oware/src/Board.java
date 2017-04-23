@@ -15,16 +15,16 @@ public class Board
 	
 	private void initializePits()
 	{
-		for(int i = 0 ; i < pits.length ; i ++)
+		for(int i = 0 ; i < pits.length ; i++)
 		{
-			pits[i] = 4;
+			addSeedToPit(i,4);
 		}
 	}
 	
 	//sow seeds starting at pitNumber, return last sown pit number
 	public int sowSeeds(int pitNumber)
 	{
-		int seedCount = getSeedsInPit(pitNumber);
+		int seedCount = takeSeedsFromPit(pitNumber);
 		int currentPit = pitNumber;
 		
 		while(seedCount > 0)
@@ -38,18 +38,7 @@ public class Board
 		}
 		return currentPit;
 	}
-
-	//return owner of pitNumber
-	private Player getPitOwner(int pitNumber) {
-		return pitNumber <= 5 ? p1 : p2;
-	}
 	
-	//return if playerToTest is owner of pitNumber	
-	private boolean isPitOwnedByPlayer(Player playerToTest, int pitNumber) {
-		Player validPlayer = getPitOwner(pitNumber);
-		return validPlayer.equals(playerToTest);
-	}
-
 	//calculate score starting at pitNumber and add to currPlayer's score
 	public void scoreMove(Player currPlayer, int pitNumber)
 	{
@@ -60,28 +49,23 @@ public class Board
 	//calculate score starting at pitNumber and add to currPlayer's score	
 	public int calculateScore(Player currPlayer, int pitNumber)
 	{
-		int currPitScore = scorePit(pitNumber);
-		if (!isPitOwnedByPlayer(currPlayer,pitNumber) && currPitScore > 0) 
+		if (!currPlayer.isPitOwnedByPlayer(pitNumber) && isPitEligibleForScore(pitNumber)) 
 		{
-			return currPitScore += calculateScore(currPlayer,previousPit(pitNumber));
+			return takeSeedsFromPit(pitNumber) + 
+					calculateScore(currPlayer,previousPit(pitNumber));
 		} else {
 			return 0;
 		}
 	}
 	
 	//calculate score at pitNumber
-	public int scorePit(int pitNumber)
+	public boolean isPitEligibleForScore(int pitNumber)
 	{
 		int score = getSeedsInPit(pitNumber);
-		if (score == 2 || score == 3) 
-		{
-			return score;
-		} else {
-			return 0;
-		}
+		return (score == 2 || score == 3);
 	}	
 	
-	private int nextPit(int pitNumber)
+	public int nextPit(int pitNumber)
 	{
 		if (pitNumber >= 11)
 		{
@@ -91,7 +75,7 @@ public class Board
 		}
 	}
 	
-	private int previousPit(int pitNumber)
+	public int previousPit(int pitNumber)
 	{
 		if (pitNumber == 0)
 		{
@@ -113,21 +97,33 @@ public class Board
 	
 	private int getSeedsInPit(int pitNumber)
 	{
-		return pits[pitNumber]; 
+		return pits[pitNumber];
+	}
+
+	private int takeSeedsFromPit(int pitNumber)
+	{	
+		int i = pits[pitNumber];
+		pits[pitNumber] = 0;
+		return i;
 	}
 
 	public int getTotalSeedCount()
 	{
-		return getSeedCount(0,11);
+		return getSeedCount(0,12);
 	}
 
-	private int getSeedCount(int pitNumber, int endPitNumber)
+	public int getSeedCount(int pitNumber)
 	{
-		if (pitNumber <= endPitNumber)
+		return getSeedCount(pitNumber,1);
+	}
+
+	private int getSeedCount(int pitNumber, int pitCount)
+	{
+		if (pitCount==0)
 		{
-			return getSeedsInPit(pitNumber) + getSeedCount(nextPit(pitNumber),endPitNumber);
-		} else {
 			return 0;
+		} else {
+			return getSeedsInPit(pitNumber) + getSeedCount(nextPit(pitNumber),pitCount-1);
 		}
 	}
 	

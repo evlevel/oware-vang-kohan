@@ -12,7 +12,10 @@ public class Oware
 		while(true)
 		{
 			StdOut.println(c.movePrompt());
-			c.makeMove(StdIn.readInt());
+			if (c.isGameActive())
+				StdOut.println(c.makeMove(StdIn.readInt()));
+			else
+				return;
 		}
 
 	}
